@@ -16,10 +16,10 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-  function GameObject (createdAt, name, dimensions){
-  this.createdAt = createdAt;
-  this.name = name;
-  this.dimensions = dimensions;
+  function GameObject (objectparam){
+  this.createdAt = objectparam.createdAt;
+  this.name = objectparam.name;
+  this.dimensions = objectparam.dimensions;
   //this.destroy = function () {return (`${this.name} was removed from the game.`);};
 }
 GameObject.prototype.destroy = function () {return (`${this.name} was removed from the game.`);};
@@ -30,12 +30,13 @@ GameObject.prototype.destroy = function () {return (`${this.name} was removed fr
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
-function CharacterStats (healthPoints) {
-  GameObject.call(this, healthPoints);
-  this.healthPoints = healthPoints;
+function CharacterStats (characterparam) {
+  GameObject.call(this, characterparam);
+  this.healthPoints = characterparam.healthPoints;
   //this.takeDamage = function () {return (`${this.name} took damage.`);};
   //this.destroy = GameObject.destroy;
 }
+CharacterStats.prototype = Object.create(GameObject.prototype);
 CharacterStats.prototype.takeDamage = function () {return (`${this.name} took damage.`);};
 
 
@@ -48,12 +49,15 @@ CharacterStats.prototype.takeDamage = function () {return (`${this.name} took da
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
-function Humanoid (team, weapons, language) {
-  CharacterStats.call(this, team, weapons, language);
-  this.team =team;
-  this.weapons = weapons;
-  this.language = language;
+function Humanoid (humanparam) {  //edit to be one param
+  CharacterStats.call(this, humanparam);
+  this.team =humanparam.team;
+  this.weapons = humanparam.weapons;
+  this.language = humanparam.language;
 }
+
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
 Humanoid.prototype.greet = function ()  {return (`${this.name} offers a greeting in ${this.language}`);};
 
  
@@ -62,8 +66,6 @@ Humanoid.prototype.greet = function ()  {return (`${this.name} offers a greeting
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
   * Instances of CharacterStats should have all of the same properties as GameObject.
 */
-CharacterStats.prototype = Object.create(GameObject.prototype);
-Humanoid.prototype = Object.create(CharacterStats.prototype);
 
 
 
@@ -129,9 +131,9 @@ Humanoid.prototype = Object.create(CharacterStats.prototype);
   console.log(swordsman.team); // The Round Table
   console.log(mage.weapons); // Staff of Shamalama
   console.log(archer.language); // Elvish
-  // console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  // console.log(mage.takeDamage()); // Bruce took damage.
-  // console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
+  console.log(mage.takeDamage()); // Bruce took damage.
+  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 
   // Stretch task: 
